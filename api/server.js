@@ -64,7 +64,7 @@ app.get('/api/slots', (req, res) => {
 });
 
 // API endpoint to cancel a reservation
-app.post('/cancel', (req, res) => {
+app.post('/api/cancel', (req, res) => {
     const { contact, slotId } = req.body; // Extract contact and slotId from the request body
 
     if (!contact) {
@@ -92,7 +92,7 @@ app.post('/cancel', (req, res) => {
 });
 
 // API endpoint to make a reservation
-app.post('/reserve', (req, res) => {
+app.post('/api/reserve', (req, res) => {
     const { slotId, contact, startTime, endTime } = req.body; // Extract reservation details from the request body
 
     const slot = slots.find((s) => s.id === slotId); // Find the slot by its ID
