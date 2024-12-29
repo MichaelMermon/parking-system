@@ -147,17 +147,15 @@ async function handleCancellation(event) {
         return;
     }
 
-    const cancellationData = {
-    contact: document.getElementById('cancel-contact').value,  // Get the contact value from the input field
-    slotId: document.getElementById('cancel-slot').value  // Optionally include the slot ID
-};
+    const cancellationData = { contact };
+    if (slotId) cancellationData.slotId = parseInt(slotId, 10);  // Add slot ID if provided
 
-const response = await fetch(`${API_URL}/api/cancel`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(cancellationData)  // Send the cancellation data as JSON
-});
-
+    try {
+        const response = await fetch(`${API_URL}/api/cancel`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cancellationData)  // Send cancellation data to the backend
+        });
 
         const result = await response.json();  // Parse the response as JSON
         alert(result.message);  // Show the result message
