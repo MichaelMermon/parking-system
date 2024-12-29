@@ -3,9 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
-// Initialize the Express app and define the port
+// Initialize the Express app
 const app = express();
-const PORT = 3000;
 
 // Middleware for handling CORS and JSON parsing
 app.use(cors()); // Allow cross-origin requests
@@ -65,7 +64,7 @@ app.get('/api/slots', (req, res) => {
 });
 
 // API endpoint to cancel a reservation
-app.post('/cancel', (req, res) => {
+app.post('/api/cancel', (req, res) => {
     const { contact, slotId } = req.body; // Extract contact and slotId from the request body
 
     if (!contact) {
@@ -93,7 +92,7 @@ app.post('/cancel', (req, res) => {
 });
 
 // API endpoint to make a reservation
-app.post('/reserve', (req, res) => {
+app.post('/api/reserve', (req, res) => {
     const { slotId, contact, startTime, endTime } = req.body; // Extract reservation details from the request body
 
     const slot = slots.find((s) => s.id === slotId); // Find the slot by its ID
@@ -113,7 +112,7 @@ app.post('/reserve', (req, res) => {
     }
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`); // Log server status on successful start
-});
+// Default handler for Vercel serverless function
+module.exports = (req, res) => {
+    app(req, res);  // Delegate the request to Express
+};
