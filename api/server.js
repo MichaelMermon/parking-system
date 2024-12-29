@@ -56,7 +56,7 @@ app.get('/api/slots', (req, res) => {
     res.json(slots);
 });
 
-app.post('/cancel', (req, res) => {
+app.post('api/cancel', (req, res) => {
     const { contact, slotId } = req.body;
     if (!contact) {
         return res.status(400).json({ message: 'Contact number is required.' });
@@ -76,7 +76,7 @@ app.post('/cancel', (req, res) => {
     res.json({ success: true, message: `Reservation for Slot ${canceledReservation.slotId} canceled successfully.` });
 });
 
-app.post('/reserve', (req, res) => {
+app.post('api/reserve', (req, res) => {
     const { slotId, contact, startTime, endTime } = req.body;
     const slot = slots.find((s) => s.id === slotId);
     if (slot) {
