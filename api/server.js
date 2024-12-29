@@ -91,7 +91,7 @@ app.post('/api/cancel', (req, res) => {
     }
 
     // Send success response
-    res.json({ success: true, message: `Reservation canceled successfully.` });
+    res.json({ success: true, message: `Reservation for Slot ${canceledReservation.slotId} canceled successfully.` });
 });
 
 // API endpoint to make a reservation
