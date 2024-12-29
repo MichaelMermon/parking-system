@@ -173,6 +173,7 @@ async function handleCancellation(event) {
 // Display cancellation confirmation after successful cancellation
 function displayCancellationConfirmation({ contact, slotId }) {
     const confirmationDetails = document.getElementById('confirmation-details');
+    // Ensure the contact and slotId are displayed in the confirmation message correctly
     confirmationDetails.innerHTML = `Reservation for Contact: <strong>${contact}</strong> ${slotId ? `and Slot ID: <strong>${slotId}</strong>` : ''} has been canceled successfully.`;
     document.getElementById('cancel-confirmation').style.display = 'block';  // Show the cancellation confirmation section
 }
