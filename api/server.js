@@ -67,7 +67,7 @@ app.get('/api/slots', (req, res) => {
 app.post('/api/cancel', (req, res) => {
     const { contact, slotId } = req.body;  // Extract contact and slotId from the request body
 
-    // Check if contact is provided
+    // Check if contact is provided and not empty
     if (!contact || typeof contact !== 'string' || contact.trim() === '') {
         return res.status(400).json({ message: 'A valid contact number is required.' });
     }
