@@ -174,9 +174,16 @@ async function handleCancellation(event) {
 // Display cancellation confirmation after successful cancellation
 function displayCancellationConfirmation(result) {
     const confirmationDetails = document.getElementById('confirmation-details');
-    confirmationDetails.innerHTML = result.message;  // Use the message directly from the backend response
+    confirmationDetails.innerHTML = `${result.message}<br>Contact: ${result.contact}`;  // Show contact number in the confirmation
 
     document.getElementById('cancel-confirmation').style.display = 'block';  // Show the cancellation confirmation section
+
+    clearCancellationForm();  // Clear the cancellation form after confirmation
+}
+
+// Clear the cancellation form after submission
+function clearCancellationForm() {
+    document.getElementById('cancel-form').reset();  // Reset the form
 }
 
 // Add event listener to the reservation form
