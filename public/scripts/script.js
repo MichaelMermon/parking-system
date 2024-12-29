@@ -170,12 +170,6 @@ async function handleCancellation(event) {
     }
 }
 
-// Display cancellation confirmation after successful cancellation
-function displayCancellationConfirmation({ contact, slotId }) {
-    const confirmationDetails = document.getElementById('confirmation-details');
-    confirmationDetails.innerHTML = `Reservation has been canceled successfully.`;
-    document.getElementById('cancel-confirmation').style.display = 'block';  // Show the cancellation confirmation section
-}
 
 // Add event listener to the reservation form
 document.getElementById('reservation-form').addEventListener('submit', handleReservation);
