@@ -1,4 +1,4 @@
-const API_URL = 'https://parkingsystem-kohl.vercel.app/';  // API endpoint for interacting with the backend
+const API_URL = 'https://parkingsystem-kohl.vercel.app';  // API endpoint for interacting with the backend
 
 // Utility function to get the class for slot status (reserved, occupied, available)
 const getStatusClass = (status) => {
