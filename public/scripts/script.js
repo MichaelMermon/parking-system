@@ -142,19 +142,13 @@ async function handleCancellation(event) {
     const contact = document.getElementById('cancel-contact').value;  // Get the contact number for cancellation
     const slotId = document.getElementById('cancel-slot').value;  // Get the slot ID for cancellation (optional)
 
-    // Log contact and slotId for debugging
-    console.log('Contact:', contact);
-    console.log('Slot ID:', slotId);
-
-    // Ensure contact is provided
-    if (!contact) {  
+    if (!contact) {  // Validate that the contact is provided
         alert('Please provide your contact number.');  // Show validation alert
         return;
     }
 
-    // Prepare cancellation data
     const cancellationData = { contact };
-    if (slotId) cancellationData.slotId = parseInt(slotId, 10);  // Include slotId if provided
+    if (slotId) cancellationData.slotId = parseInt(slotId, 10);  // Add slot ID if provided
 
     try {
         const response = await fetch(`${API_URL}/api/cancel`, {
@@ -165,16 +159,11 @@ async function handleCancellation(event) {
 
         const result = await response.json();  // Parse the response as JSON
 
-        // Handle response from backend
-        if (!response.ok) {
-            throw new Error(result.message || 'Failed to cancel reservation');
-        }
-
-        alert(result.message);  // Show the result message
+        alert(result.message);  // Show the result message from the backend
 
         if (response.ok) {
             fetchSlots();  // Fetch updated slot statuses
-            displayCancellationConfirmation(result);  // Display cancellation confirmation
+            displayCancellationConfirmation(result);  // Pass the result to displayCancellationConfirmation
         }
     } catch (error) {
         console.error('Error canceling reservation:', error);  // Log the error
@@ -183,10 +172,11 @@ async function handleCancellation(event) {
 }
 
 // Display cancellation confirmation after successful cancellation
-function displayCancellationConfirmation({ contact, slotId }) {
+function displayCancellationConfirmation(result) {
+    // Ensure that the result object has both contact and slotId
     const confirmationDetails = document.getElementById('confirmation-details');
-    console.log('Cancellation Confirmation:', { contact, slotId }); // Log confirmation details for debugging
-    confirmationDetails.innerHTML = `Reservation for Contact: <strong>${contact}</strong> ${slotId ? `and Slot ID: <strong>${slotId}</strong>` : ''} has been canceled successfully.`;
+    confirmationDetails.innerHTML = `Reservation for Contact: <strong>${result.contact}</strong> ${result.slotId ? `and Slot ID: <strong>${result.slotId}</strong>` : ''} has been canceled successfully.`;
+
     document.getElementById('cancel-confirmation').style.display = 'block';  // Show the cancellation confirmation section
 }
 
