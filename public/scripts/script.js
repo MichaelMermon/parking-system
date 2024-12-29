@@ -142,13 +142,19 @@ async function handleCancellation(event) {
     const contact = document.getElementById('cancel-contact').value;  // Get the contact number for cancellation
     const slotId = document.getElementById('cancel-slot').value;  // Get the slot ID for cancellation (optional)
 
-    if (!contact) {  // Validate that the contact is provided
+    // Log contact and slotId for debugging
+    console.log('Contact:', contact);
+    console.log('Slot ID:', slotId);
+
+    // Ensure contact is provided
+    if (!contact) {  
         alert('Please provide your contact number.');  // Show validation alert
         return;
     }
 
+    // Prepare cancellation data
     const cancellationData = { contact };
-    if (slotId) cancellationData.slotId = parseInt(slotId, 10);  // Add slot ID if provided
+    if (slotId) cancellationData.slotId = parseInt(slotId, 10);  // Include slotId if provided
 
     try {
         const response = await fetch(`${API_URL}/api/cancel`, {
@@ -158,6 +164,12 @@ async function handleCancellation(event) {
         });
 
         const result = await response.json();  // Parse the response as JSON
+
+        // Handle response from backend
+        if (!response.ok) {
+            throw new Error(result.message || 'Failed to cancel reservation');
+        }
+
         alert(result.message);  // Show the result message
 
         if (response.ok) {
@@ -170,6 +182,13 @@ async function handleCancellation(event) {
     }
 }
 
+// Display cancellation confirmation after successful cancellation
+function displayCancellationConfirmation({ contact, slotId }) {
+    const confirmationDetails = document.getElementById('confirmation-details');
+    console.log('Cancellation Confirmation:', { contact, slotId }); // Log confirmation details for debugging
+    confirmationDetails.innerHTML = `Reservation for Contact: <strong>${contact}</strong> ${slotId ? `and Slot ID: <strong>${slotId}</strong>` : ''} has been canceled successfully.`;
+    document.getElementById('cancel-confirmation').style.display = 'block';  // Show the cancellation confirmation section
+}
 
 // Add event listener to the reservation form
 document.getElementById('reservation-form').addEventListener('submit', handleReservation);
