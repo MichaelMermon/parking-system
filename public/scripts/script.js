@@ -55,13 +55,16 @@ async function handleReservation(event) {
     try {
         const response = await makeReservation(reservationData);  // Make the reservation request
         const result = await response.json();  // Parse the response as JSON
+
+        if (!response.ok) {
+            throw new Error(result.message || 'Failed to make reservation');
+        }
+
         alert(result.message);  // Show the result message
 
-        if (response.ok) {
-            fetchSlots();  // Fetch updated slot statuses
-            generateReceipt(reservationData);  // Generate the receipt for the reservation
-            clearReservationForm();  // Clear the form after successful submission
-        }
+        fetchSlots();  // Fetch updated slot statuses
+        generateReceipt(reservationData);  // Generate the receipt for the reservation
+        clearReservationForm();  // Clear the form after successful submission
     } catch (error) {
         console.error('Error making reservation:', error);  // Log the error
         alert('An error occurred while making the reservation. Please try again.');  // Show error alert
@@ -86,7 +89,7 @@ function isValidReservation(data) {
 
 // Make the reservation request to the backend
 async function makeReservation(data) {
-    return fetch(`${API_URL}/reserve`, {
+    return fetch(`${API_URL}/api/reserve`, {  // Ensure correct endpoint
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)  // Send reservation data as JSON
@@ -148,7 +151,7 @@ async function handleCancellation(event) {
     if (slotId) cancellationData.slotId = parseInt(slotId, 10);  // Add slot ID if provided
 
     try {
-        const response = await fetch(`${API_URL}/cancel`, {
+        const response = await fetch(`${API_URL}/api/cancel`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(cancellationData)  // Send cancellation data to the backend
@@ -170,9 +173,7 @@ async function handleCancellation(event) {
 // Display cancellation confirmation after successful cancellation
 function displayCancellationConfirmation({ contact, slotId }) {
     const confirmationDetails = document.getElementById('confirmation-details');
-    confirmationDetails.innerHTML = `
-        <p>Reservation for Contact: <strong>${contact}</strong> ${slotId ? `and Slot ID: <strong>${slotId}</strong>` : ''} has been canceled successfully.</p>
-    `;
+    confirmationDetails.innerHTML = `Reservation for Contact: <strong>${contact}</strong> ${slotId ? `and Slot ID: <strong>${slotId}</strong>` : ''} has been canceled successfully.`;
     document.getElementById('cancel-confirmation').style.display = 'block';  // Show the cancellation confirmation section
 }
 
