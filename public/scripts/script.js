@@ -131,16 +131,14 @@ function formatDateTime(dateTimeString) {
 }
 
 // Clear the reservation form after submission
-function clearReservationForm() {
-    document.getElementById('reservation-form').reset();  // Reset the form
-}
-
-// Handle cancellation form submission
 async function handleCancellation(event) {
     event.preventDefault();  // Prevent the default form submission behavior
 
     const contact = document.getElementById('cancel-contact').value;  // Get the contact number for cancellation
     const slotId = document.getElementById('cancel-slot').value;  // Get the slot ID for cancellation (optional)
+
+    console.log('Contact:', contact);  // Log contact to check if it's being captured
+    console.log('Slot ID:', slotId);   // Log slotId to check if it's being captured
 
     if (!contact) {  // Validate that the contact is provided
         alert('Please provide your contact number.');  // Show validation alert
@@ -169,6 +167,7 @@ async function handleCancellation(event) {
         alert('An error occurred while canceling the reservation. Please try again.');  // Show error alert
     }
 }
+
 
 // Display cancellation confirmation after successful cancellation
 function displayCancellationConfirmation({ contact, slotId }) {
