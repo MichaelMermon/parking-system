@@ -67,32 +67,34 @@ app.get('/api/slots', (req, res) => {
 app.post('/api/cancel', (req, res) => {
     const { contact, slotId } = req.body;  // Extract contact and slotId from the request body
 
-    // If no contact is provided, return an error
     if (!contact) {
         return res.status(400).json({ message: 'Contact number is required.' });
     }
 
-    const trimmedContact = contact.trim();  // Trim whitespace from the contact number
-    // Find the reservation that matches the contact and optionally the slotId
+    const trimmedContact = contact.trim();
     const reservationIndex = reservations.findIndex(
         (r) => r.contact === trimmedContact && (!slotId || r.slotId === parseInt(slotId))
     );
 
-    // If no reservation matches, return a 404 error
     if (reservationIndex === -1) {
         return res.status(404).json({ message: 'No matching reservation found for cancellation.' });
     }
 
-    // Remove the reservation and update the slot status
     const canceledReservation = reservations.splice(reservationIndex, 1)[0];
     const slot = slots.find((s) => s.id === canceledReservation.slotId);
     if (slot) {
         slot.status = 'Available';  // Update slot status to 'Available'
     }
 
-    // Send success response
-    res.json({ success: true, message: `Reservation for Slot ${canceledReservation.slotId} canceled successfully.` });
+    // Return success message, contact, and slotId
+    res.json({
+        success: true,
+        message: `Reservation for Slot ${canceledReservation.slotId} canceled successfully.`,
+        contact: canceledReservation.contact,
+        slotId: canceledReservation.slotId
+    });
 });
+
 
 // API endpoint to make a reservation
 app.post('/api/reserve', (req, res) => {
