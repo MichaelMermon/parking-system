@@ -67,13 +67,12 @@ app.get('/api/slots', (req, res) => {
 app.post('/api/cancel', (req, res) => {
     const { contact, slotId } = req.body;  // Extract contact and slotId from the request body
 
-    // Check if contact is provided and not empty
-    if (!contact || typeof contact !== 'string' || contact.trim() === '') {
-        return res.status(400).json({ message: 'A valid contact number is required.' });
+    // If no contact is provided, return an error
+    if (!contact) {
+        return res.status(400).json({ message: 'Contact number is required.' });
     }
 
     const trimmedContact = contact.trim();  // Trim whitespace from the contact number
-
     // Find the reservation that matches the contact and optionally the slotId
     const reservationIndex = reservations.findIndex(
         (r) => r.contact === trimmedContact && (!slotId || r.slotId === parseInt(slotId))
@@ -91,11 +90,8 @@ app.post('/api/cancel', (req, res) => {
         slot.status = 'Available';  // Update slot status to 'Available'
     }
 
-    // Send success response with the correct contact number
-    res.json({ 
-        success: true, 
-        message: `Reservation for Contact: ${trimmedContact} and Slot ${canceledReservation.slotId} canceled successfully.` 
-    });
+    // Send success response
+    res.json({ success: true, message: `Reservation for Slot ${canceledReservation.slotId} canceled successfully.` });
 });
 
 // API endpoint to make a reservation
