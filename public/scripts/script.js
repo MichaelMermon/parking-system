@@ -131,14 +131,16 @@ function formatDateTime(dateTimeString) {
 }
 
 // Clear the reservation form after submission
+function clearReservationForm() {
+    document.getElementById('reservation-form').reset();  // Reset the form
+}
+
+// Handle cancellation form submission
 async function handleCancellation(event) {
     event.preventDefault();  // Prevent the default form submission behavior
 
     const contact = document.getElementById('cancel-contact').value;  // Get the contact number for cancellation
     const slotId = document.getElementById('cancel-slot').value;  // Get the slot ID for cancellation (optional)
-
-    console.log('Contact:', contact);  // Log contact to check if it's being captured
-    console.log('Slot ID:', slotId);   // Log slotId to check if it's being captured
 
     if (!contact) {  // Validate that the contact is provided
         alert('Please provide your contact number.');  // Show validation alert
@@ -168,12 +170,10 @@ async function handleCancellation(event) {
     }
 }
 
-
 // Display cancellation confirmation after successful cancellation
 function displayCancellationConfirmation({ contact, slotId }) {
     const confirmationDetails = document.getElementById('confirmation-details');
-    // Ensure the contact and slotId are displayed in the confirmation message correctly
-    confirmationDetails.innerHTML = `Reservation for Contact: <strong>${contact}</strong> ${slotId ? `and Slot ID: <strong>${slotId}</strong>` : ''} has been canceled successfully.`;
+    confirmationDetails.innerHTML = `Reservation has been canceled successfully.`;
     document.getElementById('cancel-confirmation').style.display = 'block';  // Show the cancellation confirmation section
 }
 
